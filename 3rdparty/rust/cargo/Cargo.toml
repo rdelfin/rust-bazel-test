@@ -1,0 +1,29 @@
+[package]
+name = "compile_with_bazel"
+version = "0.0.0"
+
+# Mandatory (or Cargo tooling is unhappy)
+[lib]
+path = "fake_lib.rs"
+
+[dependencies]
+cxx = "1.0.78"
+log = "0.4.17"
+
+[package.metadata.raze]
+workspace_path = "//3rdparty/rust/cargo"
+package_aliases_dir = "."
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+]
+genmode = "Remote"
+
+[package.metadata.raze.binary_deps]
+cxxbridge-cmd = "1.0.78"
+
+[package.metadata.raze.crates.cxxbridge-cmd.'1.0.78']
+extra_aliased_targets = [
+    "cargo_bin_cxxbridge"
+]
+compile_data_attr = "glob([\"**/*.h\"])"
